@@ -1,0 +1,16 @@
+{
+    "contents" : "Package: pgMulticore\nType: Package\nTitle: Low overhead multicore processing for BionavigatoR\nVersion: 1.1\nDate: 2013-09-04\nAuthor: Rik de Wijn\nMaintainer: Rik de Wijn <rdwijn@pamgene.com>\nDescription: Low overhead multicore processing designed for use with the Bionavigator-R interface. Will detect the number of cores on the local PC and separate e.g. a \"per cell\" process accordingly. Firewall permnission may be required. \nLicense: (c) PamGene 2013\nDepends: PamCloud\nSuggests: parallel, doParallel, foreach, plyr",
+    "created" : 1449221787366.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2691640058",
+    "id" : "474DE6F6",
+    "lastKnownWriteTime" : 1378294740,
+    "path" : "~/dev/bitbucket/pgmulticore/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "dcf"
+}

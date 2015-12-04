@@ -1,0 +1,16 @@
+{
+    "contents" : "\ndoMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .packages = NULL, ...){\n\n  if (!(\"parallel\" %in% installed.packages ())){\n    install.packages(\"parallel\", repos = \"http://cran.rstudio.com/\")\n  }\n  if (!(\"doParallel\" %in% installed.packages ())){\n    install.packages(\"doParallel\", repos = \"http://cran.rstudio.com/\")\n  }\n  if (!(\"foreach\" %in% installed.packages ())){\n    install.packages(\"foreach\", repos = \"http://cran.rstudio.com/\")\n  }\n  if (!(\"plyr\" %in% installed.packages ())){\n    install.packages(\"plyr\", repos = \"http://cran.rstudio.com/\")\n  }\n  library(parallel)\n  library(doParallel)\n  library(foreach)\n  library(plyr)\n  \n  aFormTerms = terms(rhsFormula)\n\tif(attr(aFormTerms, \"response\")) stop(\"Please use a right hand sided formula only\")\n\tterm.labels = attr(aFormTerms, \"term.labels\")\n\tbFound = term.labels %in% colnames(data)\n\tif (any(!bFound)){\n\t\tnotFound = term.labels[!bFound]\n\t\tmsg = paste(\"Could not find the following columns in the data frame\",notFound)\n\t\tstop(msg)\n\t}\n\tcell.split = drop(interaction(data[term.labels]))\n\tnCores = detectCores()\n\tcpu.split = subdivCells(cell.split, nCores)\n\taSplitList = split(data, cpu.split)\n\tcl = makeCluster(nCores)\n\tregisterDoParallel(cl)\n\tprint(paste(\"Please wait, processing on \", nCores, \" CPU cores ...\"))\n\tanExportList = c(.export, \"doSingleCore\")\n  aPackagesList = c(.packages, \"plyr\")\n\taResult =  foreach(i = 1:nCores, .combine = rbind, .packages = aPackagesList, .export = anExportList) %dopar% doSingleCore(aSplitList[[i]], rhsFormula, operatorFunction, aProgress = \"none\", ...) \n\tstopCluster(cl)\n\treturn(aResult)\n}\n\ndoSingleCore = function(data, rhsFormula, operatorFunction, aProgress = progress_win(title=\"processing ...\"), ... ){\n  aResult = ddply(data, rhsFormula, .fun = operatorFunction, .progress = aProgress, ...)\n\treturn(aResult)\n}\n\nsubdivCells = function(cellID, numDiv){\n\tcellID = as.factor(cellID)\n\tnCells = length(levels(cellID))\n\tidx = subdiv(nCells, numDiv)\n\tdvIdx = vector(length = length(cellID))\n\tfor (i in 1:numDiv){\n\t\tdvIdx[cellID %in% levels(cellID)[idx == i]] = i\n\t}\n\treturn(dvIdx)\n}\n\nsubdiv = function(nCells, numDiv){\n\tidx = rep(1:numDiv, ceiling(nCells/numDiv))[1:nCells]\n\treturn(idx)\n}\n\n",
+    "created" : 1449221734147.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "918393894",
+    "id" : "3F9706E6",
+    "lastKnownWriteTime" : 1378295196,
+    "path" : "~/dev/bitbucket/pgmulticore/R/doMultiCore.r",
+    "project_path" : "R/doMultiCore.r",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

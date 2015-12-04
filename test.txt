@@ -1,0 +1,2 @@
+<PamCloud Bionavigator Resources>
+For Manual installation of pamcloud packages see:
