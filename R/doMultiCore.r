@@ -1,5 +1,5 @@
 
-doMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .packages = NULL, ...){
+doMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .packages = NULL, exportEnv = parent.frame(), ...){
 
   if (!("parallel" %in% installed.packages ())){
     install.packages("parallel", repos = "http://cran.rstudio.com/")
@@ -35,8 +35,11 @@ doMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .pack
 	registerDoParallel(cl)
 	print(paste("Please wait, processing on ", nCores, " CPU cores ..."))
 	anExportList = c(.export, "doSingleCore")
-  aPackagesList = c(.packages, "plyr")
-	aResult =  foreach(i = 1:nCores, .combine = rbind, .packages = aPackagesList, .export = anExportList) %dopar% doSingleCore(aSplitList[[i]], rhsFormula, operatorFunction, aProgress = "none", ...) 
+ 	clusterExport(cl=cl,anExportList,envir=exportEnv)
+   aPackagesList = c(.packages, "plyr")
+  aResult =  foreach(i = 1:nCores, .combine = rbind, .packages = aPackagesList) %dopar% doSingleCore(aSplitList[[i]], rhsFormula, operatorFunction, aProgress = "none", ...) 
+  
+	#aResult =  foreach(i = 1:nCores, .combine = rbind, .packages = aPackagesList, .export = anExportList) %dopar% doSingleCore(aSplitList[[i]], rhsFormula, operatorFunction, aProgress = "none", ...) 
 	stopCluster(cl)
 	return(aResult)
 }
