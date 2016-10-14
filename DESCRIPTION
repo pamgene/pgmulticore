@@ -8,4 +8,8 @@ Maintainer: Rik de Wijn <rdwijn@pamgene.com>
 Description: Low overhead multicore processing designed for use with the Bionavigator-R interface. Will detect the number of cores on the local PC and separate e.g. a "per cell" process accordingly. Firewall permnission may be required. 
 License: (c) PamGene 2016
 Depends: PamCloud
-Suggests: parallel, doParallel, foreach, plyr
+Imports: 
+  parallel,
+  doParallel,
+  foreach, 
+  plyr

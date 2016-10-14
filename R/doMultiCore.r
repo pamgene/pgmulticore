@@ -1,23 +1,10 @@
+library(parallel)
+library(doParallel)
+library(foreach)
+library(plyr)
 
 doMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .packages = NULL, exportEnv = parent.frame(), ...){
-
-  if (!("parallel" %in% installed.packages ())){
-    install.packages("parallel", repos = "http://cran.rstudio.com/")
-  }
-  if (!("doParallel" %in% installed.packages ())){
-    install.packages("doParallel", repos = "http://cran.rstudio.com/")
-  }
-  if (!("foreach" %in% installed.packages ())){
-    install.packages("foreach", repos = "http://cran.rstudio.com/")
-  }
-  if (!("plyr" %in% installed.packages ())){
-    install.packages("plyr", repos = "http://cran.rstudio.com/")
-  }
-  library(parallel)
-  library(doParallel)
-  library(foreach)
-  library(plyr)
-  
+ 
   aFormTerms = terms(rhsFormula)
 	if(attr(aFormTerms, "response")) stop("Please use a right hand sided formula only")
 	term.labels = attr(aFormTerms, "term.labels")
