@@ -1,8 +1,9 @@
-library(parallel)
-library(doParallel)
-library(foreach)
-library(plyr)
+#' @import parallel
+#' @import doParallel
+#' @import foreach
+#' @import plyr
 
+#' @export
 doMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .packages = NULL, exportEnv = parent.frame(), ...){
  
   aFormTerms = terms(rhsFormula)
@@ -31,6 +32,7 @@ doMultiCore = function(rhsFormula, data, operatorFunction, .export = NULL, .pack
 	return(aResult)
 }
 
+#' @export
 doSingleCore = function(data, rhsFormula, operatorFunction, aProgress = progress_win(title="processing ..."), ... ){
   aResult = ddply(data, rhsFormula, .fun = operatorFunction, .progress = aProgress, ...)
 	return(aResult)
